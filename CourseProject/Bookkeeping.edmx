@@ -1,0 +1,345 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище cwdbModel" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="income">
+          <Key>
+            <PropertyRef Name="incomeId" />
+          </Key>
+          <Property Name="idUser" Type="int" Nullable="false" />
+          <Property Name="incomeDate" Type="date" Nullable="false" />
+          <Property Name="idSource" Type="int" Nullable="false" />
+          <Property Name="incomeSum" Type="double" Nullable="false" />
+          <Property Name="incomeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="incomesources">
+          <Key>
+            <PropertyRef Name="idSource" />
+          </Key>
+          <Property Name="idSource" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="sourceName" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="incomeComment" Type="varchar" MaxLength="130" />
+        </EntityType>
+        <EntityType Name="outlay">
+          <Key>
+            <PropertyRef Name="outlayId" />
+          </Key>
+          <Property Name="userId" Type="int" Nullable="false" />
+          <Property Name="outlayDate" Type="date" Nullable="false" />
+          <Property Name="itemId" Type="int" Nullable="false" />
+          <Property Name="outlaySum" Type="double" Nullable="false" />
+          <Property Name="outlayId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="outlayitems">
+          <Key>
+            <PropertyRef Name="idItem" />
+          </Key>
+          <Property Name="idItem" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="itemName" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="outlayComment" Type="varchar" MaxLength="130" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="idUser" />
+          </Key>
+          <Property Name="idUser" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userName" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="status" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <Association Name="fk1">
+          <End Role="user" Type="Self.user" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="outlay" Type="Self.outlay" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="idUser" />
+            </Principal>
+            <Dependent Role="outlay">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk2">
+          <End Role="outlayitems" Type="Self.outlayitems" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="outlay" Type="Self.outlay" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="outlayitems">
+              <PropertyRef Name="idItem" />
+            </Principal>
+            <Dependent Role="outlay">
+              <PropertyRef Name="itemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk3">
+          <End Role="user" Type="Self.user" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="income" Type="Self.income" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="idUser" />
+            </Principal>
+            <Dependent Role="income">
+              <PropertyRef Name="idUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk4">
+          <End Role="incomesources" Type="Self.incomesources" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="income" Type="Self.income" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="incomesources">
+              <PropertyRef Name="idSource" />
+            </Principal>
+            <Dependent Role="income">
+              <PropertyRef Name="idSource" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище cwdbModelContainer">
+          <EntitySet Name="income" EntityType="Self.income" Schema="cwdb" store:Type="Tables" />
+          <EntitySet Name="incomesources" EntityType="Self.incomesources" Schema="cwdb" store:Type="Tables" />
+          <EntitySet Name="outlay" EntityType="Self.outlay" Schema="cwdb" store:Type="Tables" />
+          <EntitySet Name="outlayitems" EntityType="Self.outlayitems" Schema="cwdb" store:Type="Tables" />
+          <EntitySet Name="user" EntityType="Self.user" Schema="cwdb" store:Type="Tables" />
+          <AssociationSet Name="fk1" Association="Self.fk1">
+            <End Role="user" EntitySet="user" />
+            <End Role="outlay" EntitySet="outlay" />
+          </AssociationSet>
+          <AssociationSet Name="fk2" Association="Self.fk2">
+            <End Role="outlayitems" EntitySet="outlayitems" />
+            <End Role="outlay" EntitySet="outlay" />
+          </AssociationSet>
+          <AssociationSet Name="fk3" Association="Self.fk3">
+            <End Role="user" EntitySet="user" />
+            <End Role="income" EntitySet="income" />
+          </AssociationSet>
+          <AssociationSet Name="fk4" Association="Self.fk4">
+            <End Role="incomesources" EntitySet="incomesources" />
+            <End Role="income" EntitySet="income" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="cwdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="income">
+          <Key>
+            <PropertyRef Name="incomeId" />
+          </Key>
+          <Property Name="idUser" Type="Int32" Nullable="false" />
+          <Property Name="incomeDate" Type="DateTime" Nullable="false" />
+          <Property Name="idSource" Type="Int32" Nullable="false" />
+          <Property Name="incomeSum" Type="Double" Nullable="false" />
+          <Property Name="incomeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="user" Relationship="Self.fk3" FromRole="income" ToRole="user" />
+          <NavigationProperty Name="incomesource" Relationship="Self.fk4" FromRole="income" ToRole="incomesources" />
+        </EntityType>
+        <EntityType Name="incomesource">
+          <Key>
+            <PropertyRef Name="idSource" />
+          </Key>
+          <Property Name="idSource" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="sourceName" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="incomeComment" Type="String" MaxLength="130" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="incomes" Relationship="Self.fk4" FromRole="incomesources" ToRole="income" />
+        </EntityType>
+        <EntityType Name="outlay">
+          <Key>
+            <PropertyRef Name="outlayId" />
+          </Key>
+          <Property Name="userId" Type="Int32" Nullable="false" />
+          <Property Name="outlayDate" Type="DateTime" Nullable="false" />
+          <Property Name="itemId" Type="Int32" Nullable="false" />
+          <Property Name="outlaySum" Type="Double" Nullable="false" />
+          <Property Name="outlayId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="user" Relationship="Self.fk1" FromRole="outlay" ToRole="user" />
+          <NavigationProperty Name="outlayitem" Relationship="Self.fk2" FromRole="outlay" ToRole="outlayitems" />
+        </EntityType>
+        <EntityType Name="outlayitem">
+          <Key>
+            <PropertyRef Name="idItem" />
+          </Key>
+          <Property Name="idItem" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="itemName" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="outlayComment" Type="String" MaxLength="130" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="outlays" Relationship="Self.fk2" FromRole="outlayitems" ToRole="outlay" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="idUser" />
+          </Key>
+          <Property Name="idUser" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userName" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="status" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="incomes" Relationship="Self.fk3" FromRole="user" ToRole="income" />
+          <NavigationProperty Name="outlays" Relationship="Self.fk1" FromRole="user" ToRole="outlay" />
+        </EntityType>
+        <Association Name="fk3">
+          <End Role="user" Type="Self.user" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="income" Type="Self.income" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="idUser" />
+            </Principal>
+            <Dependent Role="income">
+              <PropertyRef Name="idUser" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk4">
+          <End Role="incomesources" Type="Self.incomesource" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="income" Type="Self.income" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="incomesources">
+              <PropertyRef Name="idSource" />
+            </Principal>
+            <Dependent Role="income">
+              <PropertyRef Name="idSource" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk1">
+          <End Role="user" Type="Self.user" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="outlay" Type="Self.outlay" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="idUser" />
+            </Principal>
+            <Dependent Role="outlay">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk2">
+          <End Role="outlayitems" Type="Self.outlayitem" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="outlay" Type="Self.outlay" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="outlayitems">
+              <PropertyRef Name="idItem" />
+            </Principal>
+            <Dependent Role="outlay">
+              <PropertyRef Name="itemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="database" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="incomes" EntityType="Self.income" />
+          <EntitySet Name="incomesources" EntityType="Self.incomesource" />
+          <EntitySet Name="outlays" EntityType="Self.outlay" />
+          <EntitySet Name="outlayitems" EntityType="Self.outlayitem" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <AssociationSet Name="fk3" Association="Self.fk3">
+            <End Role="user" EntitySet="users" />
+            <End Role="income" EntitySet="incomes" />
+          </AssociationSet>
+          <AssociationSet Name="fk4" Association="Self.fk4">
+            <End Role="incomesources" EntitySet="incomesources" />
+            <End Role="income" EntitySet="incomes" />
+          </AssociationSet>
+          <AssociationSet Name="fk1" Association="Self.fk1">
+            <End Role="user" EntitySet="users" />
+            <End Role="outlay" EntitySet="outlays" />
+          </AssociationSet>
+          <AssociationSet Name="fk2" Association="Self.fk2">
+            <End Role="outlayitems" EntitySet="outlayitems" />
+            <End Role="outlay" EntitySet="outlays" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище cwdbModelContainer" CdmEntityContainer="database">
+          <EntitySetMapping Name="incomes">
+            <EntityTypeMapping TypeName="cwdbModel.income">
+              <MappingFragment StoreEntitySet="income">
+                <ScalarProperty Name="idUser" ColumnName="idUser" />
+                <ScalarProperty Name="incomeDate" ColumnName="incomeDate" />
+                <ScalarProperty Name="idSource" ColumnName="idSource" />
+                <ScalarProperty Name="incomeSum" ColumnName="incomeSum" />
+                <ScalarProperty Name="incomeId" ColumnName="incomeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="incomesources">
+            <EntityTypeMapping TypeName="cwdbModel.incomesource">
+              <MappingFragment StoreEntitySet="incomesources">
+                <ScalarProperty Name="idSource" ColumnName="idSource" />
+                <ScalarProperty Name="sourceName" ColumnName="sourceName" />
+                <ScalarProperty Name="incomeComment" ColumnName="incomeComment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="outlays">
+            <EntityTypeMapping TypeName="cwdbModel.outlay">
+              <MappingFragment StoreEntitySet="outlay">
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="outlayDate" ColumnName="outlayDate" />
+                <ScalarProperty Name="itemId" ColumnName="itemId" />
+                <ScalarProperty Name="outlaySum" ColumnName="outlaySum" />
+                <ScalarProperty Name="outlayId" ColumnName="outlayId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="outlayitems">
+            <EntityTypeMapping TypeName="cwdbModel.outlayitem">
+              <MappingFragment StoreEntitySet="outlayitems">
+                <ScalarProperty Name="idItem" ColumnName="idItem" />
+                <ScalarProperty Name="itemName" ColumnName="itemName" />
+                <ScalarProperty Name="outlayComment" ColumnName="outlayComment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="cwdbModel.user">
+              <MappingFragment StoreEntitySet="user">
+                <ScalarProperty Name="idUser" ColumnName="idUser" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
